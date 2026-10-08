@@ -1,6 +1,7 @@
 package com.jose.emprestimo_api.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
@@ -13,7 +14,7 @@ public class ClienteRequest {
     @Email(message = "Informe um e-mail válido.")
     private String email;
 
-    @Positive(message = "A idade deve ser maior que zero.")
+    @Min(value = 18, message = "O cliente deve ter pelo menos 18 anos.")
     private int idade;
 
     @Positive(message = "O salário deve ser maior que zero.")

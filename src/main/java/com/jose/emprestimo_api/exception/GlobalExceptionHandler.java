@@ -3,6 +3,8 @@ package com.jose.emprestimo_api.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,5 +46,19 @@ public class GlobalExceptionHandler {
         resposta.put("mensagem", "O valor informado para o parâmetro é inválido.");
 
         return ResponseEntity.badRequest().body(resposta);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> tratarErroDeIntegridade(
+            DataIntegrityViolationException erro) {
+
+        Map<String, String> resposta = new HashMap<>();
+
+        resposta.put("erro", "Operação não permitida.");
+        resposta.put(
+                "mensagem",
+                "Não é possível excluir este cliente porque ele possui empréstimos associados.");
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(resposta);
     }
 }

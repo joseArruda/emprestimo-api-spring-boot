@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jose.emprestimo_api.dto.AnaliseEmprestimoRequest;
 import com.jose.emprestimo_api.dto.ClienteRequest;
 import com.jose.emprestimo_api.dto.ClienteResponse;
 import com.jose.emprestimo_api.dto.EmprestimoRequest;
@@ -44,6 +45,7 @@ public class EmprestimoController {
         return emprestimos.stream()
                 .map(emprestimo -> new EmprestimoResponse(
                         emprestimo.getId(),
+                        emprestimo.getCliente() != null ? emprestimo.getCliente().getId() : null,
                         "Emprestimo encontrado",
                         emprestimo.getValor(),
                         emprestimo.getPrazo(),
@@ -64,6 +66,7 @@ public class EmprestimoController {
 
         EmprestimoResponse resposta = new EmprestimoResponse(
                 emprestimoEncontrado.getId(),
+                emprestimoEncontrado.getCliente() != null ? emprestimoEncontrado.getCliente().getId() : null,
                 "Empréstimo encontrado.",
                 emprestimoEncontrado.getValor(),
                 emprestimoEncontrado.getPrazo(),
@@ -73,8 +76,17 @@ public class EmprestimoController {
     }
 
     @GetMapping("/clientes")
-    public List<Cliente> listarClientes() {
-        return clienteService.listarClientes();
+    public List<ClienteResponse> listarClientes() {
+        List<Cliente> clientes = clienteService.listarClientes();
+
+        return clientes.stream()
+                .map(cliente -> new ClienteResponse(
+                        cliente.getId(),
+                        cliente.getNome(),
+                        cliente.getEmail(),
+                        cliente.getIdade(),
+                        cliente.getSalario()))
+                .toList();
     }
 
     @GetMapping("/clientes/{id}")
@@ -117,6 +129,7 @@ public class EmprestimoController {
         List<EmprestimoResponse> resposta = emprestimos.stream()
                 .map(emprestimo -> new EmprestimoResponse(
                         emprestimo.getId(),
+                        emprestimo.getCliente() != null ? emprestimo.getCliente().getId() : null,
                         "Emprestimo encontrado.",
                         emprestimo.getValor(),
                         emprestimo.getPrazo(),
@@ -134,6 +147,7 @@ public class EmprestimoController {
         List<EmprestimoResponse> resposta = emprestimos.stream()
                 .map(emprestimo -> new EmprestimoResponse(
                         emprestimo.getId(),
+                        emprestimo.getCliente() != null ? emprestimo.getCliente().getId() : null,
                         "Empréstimo encontrado.",
                         emprestimo.getValor(),
                         emprestimo.getPrazo(),
@@ -188,6 +202,7 @@ public class EmprestimoController {
 
         EmprestimoResponse resposta = new EmprestimoResponse(
                 emprestimoCriado.getId(),
+                emprestimoCriado.getCliente() != null ? emprestimoCriado.getCliente().getId() : null,
                 "Empréstimo criado com sucesso.",
                 emprestimoCriado.getValor(),
                 emprestimoCriado.getPrazo(),
@@ -198,7 +213,7 @@ public class EmprestimoController {
     }
 
     @PostMapping("/emprestimos/analisar")
-    public String analisar(@RequestBody EmprestimoRequest emprestimo) {
+    public StatusEmprestimo analisar(@Valid @RequestBody AnaliseEmprestimoRequest emprestimo) {
         return emprestimoService.analisarEmprestimo(
                 emprestimo.getValor());
     }
@@ -254,6 +269,7 @@ public class EmprestimoController {
 
         EmprestimoResponse resposta = new EmprestimoResponse(
                 emprestimoEncontrado.getId(),
+                emprestimoEncontrado.getCliente() != null ? emprestimoEncontrado.getCliente().getId() : null,
                 "Emprestimo atualizado com sucesso",
                 emprestimoEncontrado.getValor(),
                 emprestimoEncontrado.getPrazo(),
@@ -275,8 +291,8 @@ public class EmprestimoController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/emprestimo/{id}")
-    public ResponseEntity<Void> deletarEmprestimo(Long id) {
+    @DeleteMapping("/emprestimos/{id}")
+    public ResponseEntity<Void> deletarEmprestimo(@PathVariable Long id) {
 
         boolean deletarEmprestimo = emprestimoService.deletarEmprestimo(id);
 

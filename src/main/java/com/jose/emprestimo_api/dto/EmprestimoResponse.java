@@ -4,6 +4,7 @@ import com.jose.emprestimo_api.entity.StatusEmprestimo;
 
 public class EmprestimoResponse {
     private Long id;
+    private Long clienteId;
     private String mensagem;
     private double valor;
     private int prazo;
@@ -11,12 +12,14 @@ public class EmprestimoResponse {
 
     public EmprestimoResponse(
             Long id,
+            Long clienteId,
             String mensagem,
             double valor,
             int prazo,
             StatusEmprestimo status) {
 
         this.id = id;
+        this.clienteId = clienteId;
         this.mensagem = mensagem;
         this.valor = valor;
         this.prazo = prazo;
@@ -25,6 +28,10 @@ public class EmprestimoResponse {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getClienteId() {
+        return clienteId;
     }
 
     public String getMensagem() {

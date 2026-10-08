@@ -25,11 +25,8 @@ public class EmprestimoService {
         this.clienteRepository = clienteRepository;
     }
 
-    public String analisarEmprestimo(double valor) {
-        if (valor <= 50000) {
-            return "Emprestimo aprovado";
-        }
-        return "Emprestimo pendente de análise";
+    public StatusEmprestimo analisarEmprestimo(double valor) {
+        return definirStatus(valor);
     }
 
     public Optional<Emprestimo> salvarEmprestimo(Emprestimo emprestimo,
@@ -43,11 +40,7 @@ public class EmprestimoService {
 
         emprestimo.setCliente(cliente.get());
 
-        if (emprestimo.getValor() <= 50000) {
-            emprestimo.setStatus(StatusEmprestimo.APROVADO);
-        } else {
-            emprestimo.setStatus(StatusEmprestimo.PENDENTE);
-        }
+        emprestimo.setStatus(definirStatus(emprestimo.getValor()));
 
         Emprestimo emprestimoSalvo = emprestimoRepository.save(emprestimo);
 
@@ -100,6 +93,13 @@ public class EmprestimoService {
 
     public List<Emprestimo> listarEmprestimoPorStatus(StatusEmprestimo status) {
         return emprestimoRepository.findByStatus(status);
+    }
+
+    private StatusEmprestimo definirStatus(double valor) {
+        if (valor <= 50000) {
+            return StatusEmprestimo.APROVADO;
+        }
+        return StatusEmprestimo.PENDENTE;
     }
 
     public boolean deletarEmprestimo(Long id) {
