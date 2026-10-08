@@ -41,16 +41,17 @@ O projeto está sendo desenvolvido de forma incremental. Novas funcionalidades, 
 - [x] Tratamento de respostas HTTP
 - [x] Definição de status do empréstimo
 - [x] Tratamento de situações de erro
+- [x] Aprimorar as regras de análise de empréstimos
+- [x] Melhorar o tratamento global de exceções
+- [x] Implementar atualização de clientes
+- [x] Implementar atualização de empréstimos
+- [x] Implementar exclusão de empréstimos
+- [x] Criar testes unitários
+- [x] Criar testes de integração
 
 ### Próximos passos
 
-- [ ] Aprimorar as regras de análise de empréstimos
-- [ ] Melhorar o tratamento global de exceções
-- [ ] Implementar atualização de clientes
-- [ ] Implementar atualização de empréstimos
-- [ ] Implementar exclusão de empréstimos
-- [ ] Criar testes unitários
-- [ ] Criar testes de integração
+
 - [ ] Implementar documentação com Swagger/OpenAPI
 - [ ] Implementar autenticação e autorização
 - [ ] Realizar deploy da API
