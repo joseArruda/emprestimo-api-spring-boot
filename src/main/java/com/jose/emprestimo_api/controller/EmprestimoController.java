@@ -123,6 +123,8 @@ public class EmprestimoController {
                 return ResponseEntity.notFound().build();
         }
 
+        @Operation(tags = {
+                        "Status" }, summary = "Verificar status da API", description = "Retorna uma mensagem para verificar se a API está respondendo.")
         @GetMapping("/status")
         public String listarStatus() {
                 return "API de empréstimos funcionando!";
@@ -179,6 +181,9 @@ public class EmprestimoController {
         }
 
         /* MÉTODOS POST */
+        @Operation(tags = {
+                        "Clientes" }, summary = "Cadastrar cliente", description = "Cadastra um novo cliente após validar nome, e-mail, idade e salário. "
+                                        + "Retorna os dados do cliente cadastrado.")
         @PostMapping("/clientes")
         public ResponseEntity<ClienteResponse> criarCliente(
                         @Valid @RequestBody ClienteRequest cliente) {
